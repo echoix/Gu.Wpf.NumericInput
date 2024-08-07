@@ -9,6 +9,7 @@ namespace Gu.Wpf.NumericInput.Tests
     using System.Windows.Data;
 
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
     public abstract class NumericBoxTests<TBox, T>
         : BaseBoxTests
@@ -56,7 +57,9 @@ namespace Gu.Wpf.NumericInput.Tests
         public void Defaults()
         {
             var box = this.Creator();
+#pragma warning disable NUnit2021 // Incompatible types for EqualTo constraint
             Assert.That(box.Increment, Is.EqualTo(1));
+#pragma warning restore NUnit2021 // Incompatible types for EqualTo constraint
             var typeMin = (T)typeof(T).GetField("MinValue")!.GetValue(null)!;
             Assert.Multiple(() =>
             {
@@ -162,7 +165,10 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.Multiple(() =>
             {
                 Assert.That(Validation.GetHasError(base.Box), Is.EqualTo(false));
+#pragma warning disable NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Box.Value, Is.EqualTo(1));
+                //ClassicAssert.AreEqual(1, this.Box.Value);
+#pragma warning restore NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Vm.Value, Is.EqualTo(null));
             });
 
