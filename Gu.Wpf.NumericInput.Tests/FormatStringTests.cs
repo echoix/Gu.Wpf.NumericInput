@@ -4,7 +4,7 @@ namespace Gu.Wpf.NumericInput.Tests
 
     public class FormatStringTests
     {
-        [TestCase(null, false)]
+        [TestCase(null!, false)]
         [TestCase("", false)]
         [TestCase("First", false)]
         [TestCase("First: {0}", true)]
@@ -30,11 +30,11 @@ namespace Gu.Wpf.NumericInput.Tests
         [TestCase("First: {0N}", false)]
         public void IsFormatString(string text, bool expected)
         {
-            Assert.AreEqual(expected, FormatString.IsFormatString(text));
+            Assert.That(FormatString.IsFormatString(text), Is.EqualTo(expected));
         }
 
-        [TestCase(null, 0, true)]
-        [TestCase(null, 1, false)]
+        [TestCase(null!, 0, true)]
+        [TestCase(null!, 1, false)]
         [TestCase("", 0, true)]
         [TestCase("", 1, false)]
         [TestCase("First", 0, true)]
@@ -63,7 +63,7 @@ namespace Gu.Wpf.NumericInput.Tests
         [TestCase("First: {0N}", 1, false)]
         public void IsValidFormatString(string text, int numberOfArguments, bool expected)
         {
-            Assert.AreEqual(expected, FormatString.IsValidFormatString(text, numberOfArguments));
+            Assert.That(FormatString.IsValidFormatString(text, numberOfArguments), Is.EqualTo(expected));
         }
 
         [TestCase("", true, 0, false)]
@@ -87,9 +87,12 @@ namespace Gu.Wpf.NumericInput.Tests
         [TestCase("First: {0N}", false, -1, null)]
         public void IsValidFormatWithOutParams(string text, bool expected, int expectedIndex, bool? expectedFormat)
         {
-            Assert.AreEqual(expected, FormatString.IsValidFormat(text, out int count, out bool? anyItemHasFormat));
-            Assert.AreEqual(expectedIndex, count);
-            Assert.AreEqual(expectedFormat, anyItemHasFormat);
+            Assert.Multiple(() =>
+            {
+                Assert.That(FormatString.IsValidFormat(text, out int count, out bool? anyItemHasFormat), Is.EqualTo(expected));
+                Assert.That(count, Is.EqualTo(expectedIndex));
+                Assert.That(anyItemHasFormat, Is.EqualTo(expectedFormat));
+            });
         }
     }
 }

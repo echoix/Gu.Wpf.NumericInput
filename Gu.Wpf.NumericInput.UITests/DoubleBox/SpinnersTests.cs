@@ -45,50 +45,65 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var vmValueBox = window.FindTextBox("VmValueBox");
             inputBox.Text = "1.23";
             vmValueBox.Click();
-            Assert.AreEqual("1.23", inputBox.EditText());
-            Assert.AreEqual("1.2", inputBox.FormattedText());
-            Assert.AreEqual("1.23", vmValueBox.Text);
-            Assert.AreEqual("1.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("1.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("1.2"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("1.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("1.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(true, increaseButton.IsEnabled);
-            Assert.AreEqual(true, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(true));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(true));
+            });
             increaseButton.Click();
-            Assert.AreEqual("2.23", inputBox.EditText());
-            Assert.AreEqual("2.2", inputBox.FormattedText());
-            Assert.AreEqual("1.23", vmValueBox.Text);
-            Assert.AreEqual(false, inputBox.HasValidationError());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("2.2"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("1.23"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+            });
             vmValueBox.Click();
 
-            Assert.AreEqual("2.23", inputBox.EditText());
-            Assert.AreEqual("2.2", inputBox.FormattedText());
-            Assert.AreEqual("2.23", vmValueBox.Text);
-            Assert.AreEqual("2.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("2.2"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("2.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
 
             window.FindTextBox("IncrementBox").Enter("5");
             vmValueBox.Click();
             increaseButton.Click();
             vmValueBox.Click();
-            Assert.AreEqual("7.23", inputBox.EditText());
-            Assert.AreEqual("7.2", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("7.23", vmValueBox.Text);
-            Assert.AreEqual("7.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("7.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("7.2"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("7.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("7.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
 
             decreaseButton.Click();
             vmValueBox.Click();
-            Assert.AreEqual("2.23", inputBox.EditText());
-            Assert.AreEqual("2.2", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("2.23", vmValueBox.Text);
-            Assert.AreEqual("2.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("2.2"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("2.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
         }
 
         [TestCaseSource(nameof(BoxContainerIds))]
@@ -107,48 +122,63 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var vmValueBox = window.FindTextBox("VmValueBox");
             inputBox.Text = "1.23";
             vmValueBox.Click();
-            Assert.AreEqual("1.23", inputBox.EditText());
-            Assert.AreEqual("1.2", inputBox.FormattedText());
-            Assert.AreEqual("1.23", vmValueBox.Text);
-            Assert.AreEqual("1.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("1.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("1.2"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("1.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("1.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(true, increaseButton.IsEnabled);
-            Assert.AreEqual(true, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(true));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(true));
+            });
             increaseButton.Click();
-            Assert.AreEqual("2.23", inputBox.EditText());
-            Assert.AreEqual("2.2", inputBox.FormattedText());
-            Assert.AreEqual("2.23", vmValueBox.Text);
-            Assert.AreEqual(false, inputBox.HasValidationError());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("2.2"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("2.23"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+            });
             vmValueBox.Click();
 
-            Assert.AreEqual("2.23", inputBox.EditText());
-            Assert.AreEqual("2.2", inputBox.FormattedText());
-            Assert.AreEqual("2.23", vmValueBox.Text);
-            Assert.AreEqual("2.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("2.2"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("2.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
 
             window.FindTextBox("IncrementBox").Enter("5");
             vmValueBox.Click();
             increaseButton.Click();
-            Assert.AreEqual("7.23", inputBox.EditText());
-            Assert.AreEqual("7.2", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("7.23", vmValueBox.Text);
-            Assert.AreEqual("7.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("7.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("7.2"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("7.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("7.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
 
             decreaseButton.Click();
-            Assert.AreEqual("2.23", inputBox.EditText());
-            Assert.AreEqual("2.2", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("2.23", vmValueBox.Text);
-            Assert.AreEqual("2.23", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("2.2"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("2.23"));
+                Assert.That(inputBox.Value(), Is.EqualTo("2.23"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
         }
 
         [TestCaseSource(nameof(BoxContainerIds))]
@@ -165,27 +195,33 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var decreaseButton = container.FindButton(SpinnerDecorator.DecreaseButtonName);
             var vmValueBox = window.FindTextBox("VmValueBox");
             vmValueBox.Click();
-            Assert.AreEqual("0", inputBox.EditText());
-            Assert.AreEqual("0", inputBox.FormattedText());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.ValueBinding, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("0"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("0"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.ValueBinding));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(true, increaseButton.IsEnabled);
-            Assert.AreEqual(true, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(true));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(true));
+            });
             increaseButton.Click();
             vmValueBox.Click();
-            Assert.AreEqual("3", inputBox.EditText());
-            Assert.AreEqual("3", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("3", vmValueBox.Text);
-            Assert.AreEqual("3", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("3"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("3"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("3"));
+                Assert.That(inputBox.Value(), Is.EqualTo("3"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(false, increaseButton.IsEnabled);
-            Assert.AreEqual(true, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(false));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(true));
+            });
         }
 
         [TestCaseSource(nameof(BoxContainerIds))]
@@ -202,27 +238,33 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var decreaseButton = container.FindButton(SpinnerDecorator.DecreaseButtonName);
             var vmValueBox = window.FindTextBox("VmValueBox");
             vmValueBox.Click();
-            Assert.AreEqual("0", inputBox.EditText());
-            Assert.AreEqual("0", inputBox.FormattedText());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.ValueBinding, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("0"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("0"));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.ValueBinding));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(true, increaseButton.IsEnabled);
-            Assert.AreEqual(true, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(true));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(true));
+            });
             decreaseButton.Click();
             vmValueBox.Click();
-            Assert.AreEqual("-3", inputBox.EditText());
-            Assert.AreEqual("-3", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("-3", vmValueBox.Text);
-            Assert.AreEqual("-3", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("-3"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("-3"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("-3"));
+                Assert.That(inputBox.Value(), Is.EqualTo("-3"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(true, increaseButton.IsEnabled);
-            Assert.AreEqual(false, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(true));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(false));
+            });
         }
 
         [TestCaseSource(nameof(BoxContainerIds))]
@@ -240,36 +282,45 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             vmValueBox.Click();
             inputBox.Text = "5";
             vmValueBox.Click();
-            Assert.AreEqual("5", inputBox.EditText());
-            Assert.AreEqual("5", inputBox.FormattedText());
-            Assert.AreEqual(true, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("5"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("5"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(false, increaseButton.IsEnabled);
-            Assert.AreEqual(true, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(false));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(true));
+            });
             decreaseButton.Click();
-            Assert.AreEqual("4", inputBox.EditText());
-            Assert.AreEqual("4", inputBox.FormattedText());
-            Assert.AreEqual(true, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("4"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("4"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
 
-            Assert.AreEqual(false, increaseButton.IsEnabled);
-            Assert.AreEqual(true, decreaseButton.IsEnabled);
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(false));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(true));
+            });
 
             decreaseButton.Click();
-            Assert.AreEqual("3", inputBox.EditText());
-            Assert.AreEqual("3", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("3", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("3"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("3"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("3"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
         }
 
         [TestCaseSource(nameof(BoxContainerIds))]
@@ -287,35 +338,44 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             vmValueBox.Click();
             inputBox.Text = "-5";
             vmValueBox.Click();
-            Assert.AreEqual("-5", inputBox.EditText());
-            Assert.AreEqual("-5", inputBox.FormattedText());
-            Assert.AreEqual(true, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
-            Assert.AreEqual(true, increaseButton.IsEnabled);
-            Assert.AreEqual(false, decreaseButton.IsEnabled);
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("-5"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("-5"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(true));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(false));
+            });
 
             increaseButton.Click();
-            Assert.AreEqual("-4", inputBox.EditText());
-            Assert.AreEqual("-4", inputBox.FormattedText());
-            Assert.AreEqual(true, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
-            Assert.AreEqual(true, increaseButton.IsEnabled);
-            Assert.AreEqual(false, decreaseButton.IsEnabled);
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("-4"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("-4"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+                Assert.That(increaseButton.IsEnabled, Is.EqualTo(true));
+                Assert.That(decreaseButton.IsEnabled, Is.EqualTo(false));
+            });
 
             increaseButton.Click();
-            Assert.AreEqual("-3", inputBox.EditText());
-            Assert.AreEqual("-3", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("-3", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("-3"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("-3"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("-3"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
         }
 
         [TestCaseSource(nameof(BoxContainerIds))]
@@ -328,16 +388,22 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var inputBox = container.FindTextBox("InputBox");
             var increaseButton = container.FindButton(SpinnerDecorator.IncreaseButtonName);
             var vmValueBox = window.FindTextBox("VmValueBox");
-            Assert.AreEqual("0", inputBox.EditText());
-            Assert.AreEqual("0", inputBox.FormattedText());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("0"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("0"));
+            });
             increaseButton.Click();
-            Assert.AreEqual("1", inputBox.EditText());
-            Assert.AreEqual("1", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("1", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("1"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("1"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("1"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
 
             using (Keyboard.Hold(Key.CONTROL))
             {
@@ -345,13 +411,16 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
 
             vmValueBox.Click();
-            Assert.AreEqual("0", inputBox.EditText());
-            Assert.AreEqual("0", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("0"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("0"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
         }
 
         [TestCaseSource(nameof(BoxContainerIds))]
@@ -366,16 +435,22 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             inputBox.Click();
             var increaseButton = container.FindButton(SpinnerDecorator.IncreaseButtonName);
             var vmValueBox = window.FindTextBox("VmValueBox");
-            Assert.AreEqual("0", inputBox.EditText());
-            Assert.AreEqual("0", inputBox.FormattedText());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("0"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("0"));
+            });
             increaseButton.Click();
-            Assert.AreEqual("1", inputBox.EditText());
-            Assert.AreEqual("1", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("1", vmValueBox.Text);
-            Assert.AreEqual("1", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("1"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("1"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("1"));
+                Assert.That(inputBox.Value(), Is.EqualTo("1"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
 
             using (Keyboard.Hold(Key.CONTROL))
             {
@@ -383,13 +458,16 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
 
             vmValueBox.Click();
-            Assert.AreEqual("0", inputBox.EditText());
-            Assert.AreEqual("0", inputBox.FormattedText());
-            Assert.AreEqual(false, inputBox.HasValidationError());
-            Assert.AreEqual("0", vmValueBox.Text);
-            Assert.AreEqual("0", inputBox.Value());
-            Assert.AreEqual(TextSource.UserInput, inputBox.TextSource());
-            Assert.AreEqual("Idle", inputBox.Status());
+            Assert.Multiple(() =>
+            {
+                Assert.That(inputBox.EditText(), Is.EqualTo("0"));
+                Assert.That(inputBox.FormattedText(), Is.EqualTo("0"));
+                Assert.That(inputBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(vmValueBox.Text, Is.EqualTo("0"));
+                Assert.That(inputBox.Value(), Is.EqualTo("0"));
+                Assert.That(inputBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+                Assert.That(inputBox.Status(), Is.EqualTo("Idle"));
+            });
         }
     }
 }

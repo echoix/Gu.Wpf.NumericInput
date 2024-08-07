@@ -49,18 +49,27 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("Max").Text = max;
 
             doubleBox.Text = text;
-            Assert.AreEqual(false, doubleBox.HasValidationError());
-            Assert.AreEqual(text, doubleBox.Text);
-            Assert.AreEqual(startValue, window.FindTextBox("ViewModelValue").Text);
-            Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(false));
+                Assert.That(doubleBox.Text, Is.EqualTo(text));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(startValue));
+                Assert.That(doubleBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+            });
 
             window.FindButton("lose focus").Click();
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(expectedInfoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(GetErrorMessage(expectedInfoMessage), window.FindTextBlock("LostFocusValidateOnLostFocusBoxError").Text);
-            Assert.AreEqual(text, doubleBox.Text);
-            Assert.AreEqual(startValue, window.FindTextBox("ViewModelValue").Text);
-            Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(expectedInfoMessage));
+                Assert.That(
+                    window.FindTextBlock("LostFocusValidateOnLostFocusBoxError").Text,
+                    Is.EqualTo(GetErrorMessage(expectedInfoMessage))
+                );
+                Assert.That(doubleBox.Text, Is.EqualTo(text));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(startValue));
+                Assert.That(doubleBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+            });
         }
 
         [TestCaseSource(nameof(TestCases))]
@@ -75,19 +84,28 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("Min").Text = min;
             window.FindTextBox("Max").Text = max;
             doubleBox.Text = text;
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(expectedInfoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(GetErrorMessage(expectedInfoMessage), window.FindTextBlock("LostFocusValidateOnPropertyChangedBoxError").Text);
-            Assert.AreEqual(text, doubleBox.Text);
-            Assert.AreEqual(startValue, window.FindTextBox("ViewModelValue").Text);
-            Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(expectedInfoMessage));
+                Assert.That(
+                    window.FindTextBlock("LostFocusValidateOnPropertyChangedBoxError").Text,
+                    Is.EqualTo(GetErrorMessage(expectedInfoMessage))
+                );
+                Assert.That(doubleBox.Text, Is.EqualTo(text));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(startValue));
+                Assert.That(doubleBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+            });
 
             window.FindButton("lose focus").Click();
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(expectedInfoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(text, doubleBox.Text);
-            Assert.AreEqual(startValue, window.FindTextBox("ViewModelValue").Text);
-            Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(expectedInfoMessage));
+                Assert.That(doubleBox.Text, Is.EqualTo(text));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(startValue));
+                Assert.That(doubleBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+            });
         }
 
         [TestCaseSource(nameof(TestCases))]
@@ -101,12 +119,15 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("Min").Text = min;
             window.FindTextBox("Max").Text = max;
             doubleBox.Text = text;
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(GetErrorMessage(expectedInfoMessage), window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text);
-            Assert.AreEqual(expectedInfoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(text, doubleBox.Text);
-            Assert.AreEqual(startValue, window.FindTextBox("ViewModelValue").Text);
-            Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text, Is.EqualTo(GetErrorMessage(expectedInfoMessage)));
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(expectedInfoMessage));
+                Assert.That(doubleBox.Text, Is.EqualTo(text));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(startValue));
+                Assert.That(doubleBox.TextSource(), Is.EqualTo(TextSource.UserInput));
+            });
         }
 
         [TestCase("3", "", "2.2", "ValidationError.IsGreaterThanValidationResult 'Vänligen ange ett värde mindre än eller lika med 2,2.'")]
@@ -121,11 +142,17 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("Min").Text = min;
             window.FindTextBox("Max").Text = max;
             doubleBox.Text = value;
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(GetErrorMessage(infoMessage), window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text);
-            Assert.AreEqual(infoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(value, doubleBox.Text);
-            Assert.AreEqual("1", window.FindTextBox("ViewModelValue").Text);
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(
+                    window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text,
+                    Is.EqualTo(GetErrorMessage(infoMessage))
+                );
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(infoMessage));
+                Assert.That(doubleBox.Text, Is.EqualTo(value));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo("1"));
+            });
         }
 
         [TestCase("3", "", "2.2", "ValidationError.IsGreaterThanValidationResult 'Please enter a value less than or equal to 2.2.'")]
@@ -140,11 +167,17 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("Min").Text = min;
             window.FindTextBox("Max").Text = max;
             doubleBox.Text = value;
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(GetErrorMessage(infoMessage), window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text);
-            Assert.AreEqual(infoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(value, doubleBox.Text);
-            Assert.AreEqual("1", window.FindTextBox("ViewModelValue").Text);
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(
+                    window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text,
+                    Is.EqualTo(GetErrorMessage(infoMessage))
+                );
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(infoMessage));
+                Assert.That(doubleBox.Text, Is.EqualTo(value));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo("1"));
+            });
         }
 
         [TestCase("3", "", "2.2", "ValidationError.IsGreaterThanValidationResult 'Please enter a value less than or equal to 2.2.'")]
@@ -155,16 +188,22 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var window = app.MainWindow;
             var doubleBox = window.FindTextBox("LostFocusValidateOnPropertyChangedBox");
             doubleBox.Text = value;
-            Assert.AreEqual(false, doubleBox.HasValidationError());
+            Assert.That(doubleBox.HasValidationError(), Is.EqualTo(false));
 
             window.FindTextBox("Min").Text = min;
             window.FindTextBox("Max").Text = max;
             window.FindButton("lose focus").Click();
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(GetErrorMessage(infoMessage), window.FindTextBlock("LostFocusValidateOnPropertyChangedBoxError").Text);
-            Assert.AreEqual(infoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(value, doubleBox.Text);
-            Assert.AreEqual(value, window.FindTextBox("ViewModelValue").Text);
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(
+                    window.FindTextBlock("LostFocusValidateOnPropertyChangedBoxError").Text,
+                    Is.EqualTo(GetErrorMessage(infoMessage))
+                );
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(infoMessage));
+                Assert.That(doubleBox.Text, Is.EqualTo(value));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(value));
+            });
         }
 
         [TestCase("3", "", "2.2", "ValidationError.IsGreaterThanValidationResult 'Please enter a value less than or equal to 2.2.'")]
@@ -175,16 +214,22 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var window = app.MainWindow;
             var doubleBox = window.FindTextBox("PropertyChangedValidateOnPropertyChangedBox");
             doubleBox.Text = value;
-            Assert.AreEqual(false, doubleBox.HasValidationError());
+            Assert.That(doubleBox.HasValidationError(), Is.EqualTo(false));
 
             window.FindTextBox("Min").Text = min;
             window.FindTextBox("Max").Text = max;
             window.FindButton("lose focus").Click();
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(GetErrorMessage(infoMessage), window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text);
-            Assert.AreEqual(infoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(value, doubleBox.Text);
-            Assert.AreEqual(value, window.FindTextBox("ViewModelValue").Text);
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(
+                    window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text,
+                    Is.EqualTo(GetErrorMessage(infoMessage))
+                );
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(infoMessage));
+                Assert.That(doubleBox.Text, Is.EqualTo(value));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(value));
+            });
         }
 
         [TestCaseSource(nameof(TestCases))]
@@ -198,14 +243,20 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("Min").Text = min;
             window.FindTextBox("Max").Text = max;
             doubleBox.Text = text;
-            Assert.AreEqual(true, doubleBox.HasValidationError());
-            Assert.AreEqual(expectedInfoMessage, doubleBox.ValidationError());
-            Assert.AreEqual(GetErrorMessage(expectedInfoMessage), window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text);
-            Assert.AreEqual(text, doubleBox.Text);
-            Assert.AreEqual(string.Empty, window.FindTextBox("ViewModelValue").Text);
+            Assert.Multiple(() =>
+            {
+                Assert.That(doubleBox.HasValidationError(), Is.EqualTo(true));
+                Assert.That(doubleBox.ValidationError(), Is.EqualTo(expectedInfoMessage));
+                Assert.That(
+                    window.FindTextBlock("PropertyChangedValidateOnPropertyChangedBoxError").Text,
+                    Is.EqualTo(GetErrorMessage(expectedInfoMessage))
+                );
+                Assert.That(doubleBox.Text, Is.EqualTo(text));
+                Assert.That(window.FindTextBox("ViewModelValue").Text, Is.EqualTo(string.Empty));
+            });
         }
 
-        public static string GetErrorMessage(string infoMessage)
+        private static string GetErrorMessage(string infoMessage)
         {
             return Regex.Match(infoMessage, "[^']+'(?<inner>[^']+)'.*").Groups["inner"].Value;
         }
