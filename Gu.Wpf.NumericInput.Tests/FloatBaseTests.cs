@@ -7,6 +7,7 @@ namespace Gu.Wpf.NumericInput.Tests
     using System.Windows;
     using System.Windows.Controls;
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
     public abstract class FloatBaseTests<TBox, T> : NumericBoxTests<TBox, T>
         where TBox : DecimalDigitsBox<T>
@@ -18,21 +19,27 @@ namespace Gu.Wpf.NumericInput.Tests
             this.Box.Text = "1";
             Assert.Multiple(() =>
             {
+#pragma warning disable NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Box.Value, Is.EqualTo(1));
+#pragma warning restore NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Box.Text, Is.EqualTo("1"));
             });
 
             this.Box.Text = "1.";
             Assert.Multiple(() =>
             {
+#pragma warning disable NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Box.Value, Is.EqualTo(1));
+#pragma warning restore NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Box.Text, Is.EqualTo("1."));
             });
 
             this.Box.Text = "1.0";
             Assert.Multiple(() =>
             {
+#pragma warning disable NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Box.Value, Is.EqualTo(1));
+#pragma warning restore NUnit2021 // Incompatible types for EqualTo constraint
                 Assert.That(this.Box.Text, Is.EqualTo("1.0"));
             });
         }
@@ -110,7 +117,7 @@ namespace Gu.Wpf.NumericInput.Tests
                     Assert.That(this.Box.FormattedText, Is.EqualTo(expectedText2));
                     Assert.That(this.Box.Value, Is.EqualTo(value));
                 });
-                expectedStatuses.AddRange(new[] { Status.Validating, Status.Idle,  });
+                expectedStatuses.AddRange(new[] { Status.Validating, Status.Idle, });
                 Assert.Multiple(() =>
                 {
                     Assert.That(statuses, Is.EqualTo(expectedStatuses).AsCollection);
