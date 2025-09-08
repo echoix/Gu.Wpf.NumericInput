@@ -1,23 +1,26 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using System.Collections.Generic;
-    using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class SpinnersTests
+    using Gu.Wpf.UiAutomation;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
+    public class SpinnersTests
     {
         private const string WindowName = "SpinnerWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        private static readonly IReadOnlyList<string> BoxContainerIds = new[]
+        private static IReadOnlyList<string> BoxContainerIds => new[]
         {
             "VanillaGroupBox",
             "DataTemplateGroupBox",
             "ControlTemplate",
         };
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -25,14 +28,15 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.WaitUntilResponsive();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void UpdatesViewModel(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void UpdatesViewModel(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -91,8 +95,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void UpdatesViewModelSpinUpdateModePropertyChanged(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void UpdatesViewModelSpinUpdateModePropertyChanged(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -151,8 +156,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void TruncatesToMax(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void TruncatesToMax(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -188,8 +194,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(true, decreaseButton.IsEnabled);
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void TruncatesToMin(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void TruncatesToMin(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -225,8 +232,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(false, decreaseButton.IsEnabled);
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void DecreasesWhenGreaterThanMax(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void DecreasesWhenGreaterThanMax(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -272,8 +280,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void IncreasesWhenLessThanMin(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void IncreasesWhenLessThanMin(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -318,8 +327,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void Undo(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void Undo(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -354,8 +364,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void UndoWhenSpinUpdateModePropertyChanged(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void UndoWhenSpinUpdateModePropertyChanged(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

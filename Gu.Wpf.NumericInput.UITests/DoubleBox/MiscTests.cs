@@ -2,23 +2,26 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using System.Collections.Generic;
     using System.Threading;
-    using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class MiscTests
+    using Gu.Wpf.UiAutomation;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [STATestClass]
+    public class MiscTests
     {
         private const string WindowName = "MiscTestsWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        private static readonly IReadOnlyList<string> BoxContainerIds = new[]
+        private static IReadOnlyList<string> BoxContainerIds => new[]
         {
             "VanillaGroupBox",
             "DataTemplateGroupBox",
             "ControlTemplate",
         };
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -26,14 +29,15 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindButton("Reset").Invoke();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void UpdatesViewModel(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void UpdatesViewModel(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -52,8 +56,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void UpdatesFromViewModel(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void UpdatesFromViewModel(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -71,8 +76,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void CanBeNull(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void CanBeNull(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -133,8 +139,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void Culture(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void Culture(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -216,8 +223,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void ValidationTriggerLostFocus(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void ValidationTriggerLostFocus(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -255,8 +263,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void NumberStylesAllowLeadingSign(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void NumberStylesAllowLeadingSign(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -291,8 +300,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void UpdateDigitsWhenGreaterThanMax(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void UpdateDigitsWhenGreaterThanMax(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -329,8 +339,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void DecimalDigits(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void DecimalDigits(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -401,8 +412,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void StringFormat(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void StringFormat(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -458,8 +470,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void Max(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void Max(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -543,8 +556,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("Idle", inputBox.Status());
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void Min(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void Min(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -580,8 +594,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("5.6", window.FindTextBox("VmValueBox").Text);
         }
 
-        [TestCaseSource(nameof(BoxContainerIds))]
-        public static void Undo(string containerId)
+        [TestMethod]
+        [DynamicData(nameof(BoxContainerIds))]
+        public void Undo(string containerId)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -600,9 +615,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("0", window.FindTextBox("VmValueBox").Text);
         }
 
-        [Apartment(ApartmentState.STA)]
-        [Test]
-        public static void CopyTest()
+        [STATestMethod]
+        public void CopyTest()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

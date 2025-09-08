@@ -1,6 +1,7 @@
 namespace Gu.Wpf.NumericInput.UITests
 {
     using System;
+
     using Gu.Wpf.UiAutomation;
 
     public static class TextBoxExt

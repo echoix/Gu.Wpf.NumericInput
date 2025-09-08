@@ -1,15 +1,17 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class CultureWindowTests
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [STATestClass]
+    public class CultureWindowTests
     {
         private const string WindowName = "CultureWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -17,18 +19,19 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.WaitUntilResponsive();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeSetUp()
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeSetUp(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCase("SpinnerDoubleBox", "1,234", "1,234")]
-        [TestCase("InheritingCultureDoubleBox", "1,234", "1,234")]
-        [TestCase("SvSeDoubleBox", "1,234", "1,234")]
-        [TestCase("EnUsDoubleBox", "1.234", "1.234")]
-        [TestCase("BoundCultureDoubleBox", "1,234", "1.234")]
-        public static void Formats(string name, string expectedSv, string expectedEn)
+        [TestMethod]
+        [DataRow("SpinnerDoubleBox", "1,234", "1,234")]
+        [DataRow("InheritingCultureDoubleBox", "1,234", "1,234")]
+        [DataRow("SvSeDoubleBox", "1,234", "1,234")]
+        [DataRow("EnUsDoubleBox", "1.234", "1.234")]
+        [DataRow("BoundCultureDoubleBox", "1,234", "1.234")]
+        public void Formats(string name, string expectedSv, string expectedEn)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

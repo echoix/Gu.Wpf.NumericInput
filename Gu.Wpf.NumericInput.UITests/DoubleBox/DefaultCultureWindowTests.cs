@@ -1,16 +1,24 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class DefaultCultureWindowTests
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
+    public class DefaultCultureWindowTests
     {
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        [Test]
-        public static void OnLoad()
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeSetUp(TestContext testContext)
         {
-            using var application = Application.Launch(ExeFileName, "DefaultCultureWindow");
+            Application.KillLaunched(ExeFileName);
+        }
+
+        [TestMethod]
+        public void OnLoad()
+        {
+            using var application = Application.Launch(ExeFileName, "DefaultCultureWindow", OnDispose.KillProcess);
             var window = application.MainWindow;
             var valueTextBox = window.FindTextBox("ValueTextBox");
             var spinnerDoubleBox = window.FindTextBox("SpinnerDoubleBox");

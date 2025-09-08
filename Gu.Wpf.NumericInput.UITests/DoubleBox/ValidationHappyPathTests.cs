@@ -1,80 +1,85 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
-    using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
+    using System.Collections.Generic;
 
-    public static class ValidationHappyPathTests
+    using Gu.Wpf.UiAutomation;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [STATestClass]
+    [TestClass]
+    public class ValidationHappyPathTests
     {
         private const string WindowName = "DoubleBoxValidationWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        private static readonly TestCaseData[] EnglishCases =
+        private static IEnumerable<object[]> EnglishCases => new[]
         {
-            new TestCaseData("1", "1"),
-            new TestCaseData(" 1", "1"),
-            new TestCaseData("1 ", "1"),
-            new TestCaseData(" 1 ", "1"),
-            new TestCaseData("1.2", "1.2"),
-            new TestCaseData("-1.2", "-1.2"),
-            new TestCaseData("+1.2", "1.2"),
-            new TestCaseData(".1", "0.1"),
-            new TestCaseData("-.1", "-0.1"),
-            new TestCaseData("0.1", "0.1"),
-            new TestCaseData("1e1", "10"),
-            new TestCaseData("1e0", "1"),
-            new TestCaseData("1e-1", "0.1"),
-            new TestCaseData("1E1", "10"),
-            new TestCaseData("1E0", "1"),
-            new TestCaseData("1E-1", "0.1"),
-            new TestCaseData("-1e1", "-10"),
-            new TestCaseData("-1e0", "-1"),
-            new TestCaseData("-1e-1", "-0.1"),
-            new TestCaseData("-1E1", "-10"),
-            new TestCaseData("-1E0", "-1"),
-            new TestCaseData("-1E-1", "-0.1"),
+            new object[] { "1", "1" },
+            new object[] { " 1", "1" },
+            new object[] { "1 ", "1" },
+            new object[] { " 1 ", "1" },
+            new object[] { "1.2", "1.2" },
+            new object[] { "-1.2", "-1.2" },
+            new object[] { "+1.2", "1.2" },
+            new object[] { ".1", "0.1" },
+            new object[] { "-.1", "-0.1" },
+            new object[] { "0.1", "0.1" },
+            new object[] { "1e1", "10" },
+            new object[] { "1e0", "1" },
+            new object[] { "1e-1", "0.1" },
+            new object[] { "1E1", "10" },
+            new object[] { "1E0", "1" },
+            new object[] { "1E-1", "0.1" },
+            new object[] { "-1e1", "-10" },
+            new object[] { "-1e0", "-1" },
+            new object[] { "-1e-1", "-0.1" },
+            new object[] { "-1E1", "-10" },
+            new object[] { "-1E0", "-1" },
+            new object[] { "-1E-1", "-0.1" },
         };
 
-        private static readonly TestCaseData[] SwedishCases =
+        private static IEnumerable<object[]> SwedishCases => new[]
         {
-            new TestCaseData("1", "1"),
-            new TestCaseData(" 1", "1"),
-            new TestCaseData("1 ", "1"),
-            new TestCaseData(" 1 ", "1"),
-            new TestCaseData("1,2", "1.2"),
-            new TestCaseData("-1,2", "-1.2"),
-            new TestCaseData("+1,2", "1.2"),
-            new TestCaseData(",1", "0.1"),
-            new TestCaseData("-,1", "-0.1"),
-            new TestCaseData("0,1", "0.1"),
-            new TestCaseData("1e1", "10"),
-            new TestCaseData("1e0", "1"),
-            new TestCaseData("1e-1", "0.1"),
-            new TestCaseData("1E1", "10"),
-            new TestCaseData("1E0", "1"),
-            new TestCaseData("1E-1", "0.1"),
-            new TestCaseData("-1e1", "-10"),
-            new TestCaseData("-1e0", "-1"),
-            new TestCaseData("-1e-1", "-0.1"),
-            new TestCaseData("-1E1", "-10"),
-            new TestCaseData("-1E0", "-1"),
-            new TestCaseData("-1E-1", "-0.1"),
+            new object[] { "1", "1" },
+            new object[] { " 1", "1" },
+            new object[] { "1 ", "1" },
+            new object[] { " 1 ", "1" },
+            new object[] { "1,2", "1.2" },
+            new object[] { "-1,2", "-1.2" },
+            new object[] { "+1,2", "1.2" },
+            new object[] { ",1", "0.1" },
+            new object[] { "-,1", "-0.1" },
+            new object[] { "0,1", "0.1" },
+            new object[] { "1e1", "10" },
+            new object[] { "1e0", "1" },
+            new object[] { "1e-1", "0.1" },
+            new object[] { "1E1", "10" },
+            new object[] { "1E0", "1" },
+            new object[] { "1E-1", "0.1" },
+            new object[] { "-1e1", "-10" },
+            new object[] { "-1e0", "-1" },
+            new object[] { "-1e-1", "-0.1" },
+            new object[] { "-1E1", "-10" },
+            new object[] { "-1E0", "-1" },
+            new object[] { "-1E-1", "-0.1" },
         };
 
-        private static readonly TestCaseData[] MinMaxSource =
+        private static IEnumerable<object[]> MinMaxSource => new[]
         {
-            new TestCaseData("1", string.Empty, string.Empty, "1"),
-            new TestCaseData("-1", "-1", string.Empty, "-1"),
-            new TestCaseData("-1", "-10", string.Empty, "-1"),
-            new TestCaseData("1", string.Empty, "1", "1"),
-            new TestCaseData("1", string.Empty, "10", "1"),
-            new TestCaseData("-2", "-2", "2", "-2"),
-            new TestCaseData("-1", "-2", "2", "-1"),
-            new TestCaseData("1", "-2", "2", "1"),
-            new TestCaseData("2", "-2", "2", "2"),
+            new object[] { "1", string.Empty, string.Empty, "1" },
+            new object[] { "-1", "-1", string.Empty, "-1" },
+            new object[] { "-1", "-10", string.Empty, "-1" },
+            new object[] { "1", string.Empty, "1", "1" },
+            new object[] { "1", string.Empty, "10", "1" },
+            new object[] { "-2", "-2", "2", "-2" },
+            new object[] { "-1", "-2", "2", "-1" },
+            new object[] { "1", "-2", "2", "1" },
+            new object[] { "2", "-2", "2", "2" },
         };
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -82,14 +87,15 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindButton("Reset").Invoke();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCaseSource(nameof(EnglishCases))]
-        public static void LostFocusValidateOnLostFocus(string text, string expected)
+        [TestMethod]
+        [DynamicData(nameof(EnglishCases))]
+        public void LostFocusValidateOnLostFocus(string text, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -107,8 +113,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(EnglishCases))]
-        public static void LostFocusValidateOnPropertyChanged(string text, string expected)
+        [TestMethod]
+        [DynamicData(nameof(EnglishCases))]
+        public void LostFocusValidateOnPropertyChanged(string text, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -126,8 +133,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(EnglishCases))]
-        public static void PropertyChangedValidateOnPropertyChanged(string text, string expected)
+        [TestMethod]
+        [DynamicData(nameof(EnglishCases))]
+        public void PropertyChangedValidateOnPropertyChanged(string text, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -139,8 +147,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(SwedishCases))]
-        public static void SwedishLostFocusValidateOnLostFocus(string text, string expected)
+        [TestMethod]
+        [DynamicData(nameof(SwedishCases))]
+        public void SwedishLostFocusValidateOnLostFocus(string text, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -159,8 +168,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(SwedishCases))]
-        public static void SwedishLostFocusValidateOnPropertyChanged(string text, string expected)
+        [TestMethod]
+        [DynamicData(nameof(SwedishCases))]
+        public void SwedishLostFocusValidateOnPropertyChanged(string text, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -177,8 +187,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(expected, window.FindTextBox("ViewModelValue").Text);
         }
 
-        [TestCaseSource(nameof(SwedishCases))]
-        public static void SwedishPropertyChangedValidateOnPropertyChanged(string text, string expected)
+        [TestMethod]
+        [DynamicData(nameof(SwedishCases))]
+        public void SwedishPropertyChangedValidateOnPropertyChanged(string text, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -190,8 +201,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(expected, window.FindTextBox("ViewModelValue").Text);
         }
 
-        [Test]
-        public static void WhenNullLostFocusValidateOnLostFocus()
+        [TestMethod]
+        public void WhenNullLostFocusValidateOnLostFocus()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -208,8 +219,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(string.Empty, window.FindTextBox("ViewModelValue").Text);
         }
 
-        [Test]
-        public static void WhenNullLostFocusValidateOnPropertyChanged()
+        [TestMethod]
+        public void WhenNullLostFocusValidateOnPropertyChanged()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -226,8 +237,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(string.Empty, window.FindTextBox("ViewModelValue").Text);
         }
 
-        [Test]
-        public static void WheNullPropertyChanged()
+        [TestMethod]
+        public void WheNullPropertyChanged()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -239,8 +250,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(string.Empty, window.FindTextBox("ViewModelValue").Text);
         }
 
-        [TestCaseSource(nameof(MinMaxSource))]
-        public static void MinMaxLostFocus(string text, string min, string max, string expected)
+        [TestMethod]
+        [DynamicData(nameof(MinMaxSource))]
+        public void MinMaxLostFocus(string text, string min, string max, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -258,8 +270,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(expected, window.FindTextBox("ViewModelValue").Text);
         }
 
-        [TestCaseSource(nameof(MinMaxSource))]
-        public static void MinMaxLostFocusValidateOnPropertyChanged(string text, string min, string max, string expected)
+        [TestMethod]
+        [DynamicData(nameof(MinMaxSource))]
+        public void MinMaxLostFocusValidateOnPropertyChanged(string text, string min, string max, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -277,8 +290,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(expected, window.FindTextBox("ViewModelValue").Text);
         }
 
-        [TestCaseSource(nameof(MinMaxSource))]
-        public static void MinMaxPropertyChanged(string text, string min, string max, string expected)
+        [TestMethod]
+        [DynamicData(nameof(MinMaxSource))]
+        public void MinMaxPropertyChanged(string text, string min, string max, string expected)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

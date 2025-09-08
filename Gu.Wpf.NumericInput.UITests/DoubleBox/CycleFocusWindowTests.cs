@@ -1,22 +1,32 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class CycleFocusWindowTests
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [STATestClass]
+    public class CycleFocusWindowTests
     {
         private const string WindowName = "CycleFocusWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
-            Application.KillLaunched(ExeFileName);
+            Application.KillLaunched(ExeFileName, WindowName);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public static void WithSpinners(bool withSpinners)
+        [ClassInitialize]
+        public static void ClassSetUp()
+        {
+            Application.KillLaunched(ExeFileName, WindowName);
+        }
+
+        [TestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void WithSpinners(bool withSpinners)
         {
             using var application = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = application.MainWindow;

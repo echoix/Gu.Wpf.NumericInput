@@ -1,34 +1,36 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
     using Gu.Wpf.UiAutomation;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    public static class ValidationErrorRequiredTests
+    [TestClass]
+    public class ValidationErrorRequiredTests
     {
         private const string WindowName = "DoubleBoxValidationWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        private static readonly TestCaseData[] TestCases = new[]
+        private static IEnumerable<object[]> TestCases => new[]
         {
-            new TestCaseData("1.2", true, "1.2", null),
-            new TestCaseData("1.2", false, "1.2", null),
-            new TestCaseData(string.Empty, false, "0", "ValidationError.RequiredButMissingValidationResult 'Please enter a number.'"),
-            new TestCaseData(string.Empty, true, string.Empty, null),
+            new object[] { "1.2", true, "1.2", null },
+            new object[] { "1.2", false, "1.2", null },
+            new object[] { string.Empty, false, "0", "ValidationError.RequiredButMissingValidationResult 'Please enter a number.'" },
+            new object[] { string.Empty, true, string.Empty, null },
         };
 
-        private static readonly TestCaseData[] SwedishCases = new[]
+        private static IEnumerable<object[]> SwedishCases => new[]
         {
-            new TestCaseData("1,2", true, "1.2", null),
-            new TestCaseData("1,2", false, "1.2", null),
-            new TestCaseData(string.Empty, false, "0", "ValidationError.RequiredButMissingValidationResult 'Vänligen ange en siffra.'"),
-            new TestCaseData(string.Empty, true, string.Empty, null),
+            new object[] { "1,2", true, "1.2", null },
+            new object[] { "1,2", false, "1.2", null },
+            new object[] { string.Empty, false, "0", "ValidationError.RequiredButMissingValidationResult 'Vänligen ange en siffra.'" },
+            new object[] { string.Empty, true, string.Empty, null },
         };
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -36,14 +38,15 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindButton("Reset").Invoke();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void LostFocusValidateOnLostFocus(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void LostFocusValidateOnLostFocus(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -75,9 +78,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCase("1.2", null)]
-        [TestCase("", "ValidationError.RequiredButMissingValidationResult 'Please enter a number.'")]
-        public static void LostFocusValidateOnLostFocusWhenIsRequiredChangesMakingInputInvalid(string text, string infoMessage)
+        [TestMethod]
+        [DataRow("1.2", null)]
+        [DataRow("", "ValidationError.RequiredButMissingValidationResult 'Please enter a number.'")]
+        public void LostFocusValidateOnLostFocusWhenIsRequiredChangesMakingInputInvalid(string text, string infoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -111,9 +115,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCase("1.2", null)]
-        [TestCase("", "ValidationError.RequiredButMissingValidationResult 'Please enter a number.'")]
-        public static void LostFocusValidateOnLostFocusWhenIsRequiredChangesMakingInputValid(string text, string infoMessage)
+        [TestMethod]
+        [DataRow("1.2", null)]
+        [DataRow("", "ValidationError.RequiredButMissingValidationResult 'Please enter a number.'")]
+        public void LostFocusValidateOnLostFocusWhenIsRequiredChangesMakingInputValid(string text, string infoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -146,8 +151,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void LostFocusValidateOnPropertyChanged(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void LostFocusValidateOnPropertyChanged(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -187,8 +193,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void PropertyChanged(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void PropertyChanged(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -214,8 +221,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(SwedishCases))]
-        public static void PropertyChangedSwedish(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(SwedishCases))]
+        public void PropertyChangedSwedish(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -243,8 +251,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void PropertyChangedWhenNotLocalized(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void PropertyChangedWhenNotLocalized(string text, bool canValueBeNull, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

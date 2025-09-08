@@ -1,15 +1,17 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class FocusWindowTests
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
+    public class FocusWindowTests
     {
         private const string WindowName = "FocusWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -17,14 +19,14 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindCheckBox("AllowSpinners").IsChecked = false;
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [Test]
-        public static void NoSpinnersNoSuffix()
+        [TestMethod]
+        public void NoSpinnersNoSuffix()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -59,8 +61,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(false, doubleBox2.HasKeyboardFocus);
         }
 
-        [Test]
-        public static void WithSpinners()
+        [TestMethod]
+        public void WithSpinners()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
