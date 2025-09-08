@@ -28,6 +28,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
+            window.FindTextBox("ViewModelValue").Text = "0";
             window.FindButton("Reset").Invoke();
         }
 
@@ -121,7 +122,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         [TestCaseSource(nameof(TestCases))]
         public static void PropertyChangedWhenNotLocalized(string text, string expected, string expectedInfoMessage)
         {
-            using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
+            using var app = Application.AttachOrLaunch(ExeFileName, WindowName, onDispose: OnDispose.KillProcess);
             var window = app.MainWindow;
             _ = window.FindComboBox("Culture").Select("ja-JP");
             var doubleBox = window.FindTextBox("PropertyChangedValidateOnPropertyChangedBox");
