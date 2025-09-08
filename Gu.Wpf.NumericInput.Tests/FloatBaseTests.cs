@@ -7,7 +7,6 @@ namespace Gu.Wpf.NumericInput.Tests
     using System.Windows;
     using System.Windows.Controls;
     using NUnit.Framework;
-    using NUnit.Framework.Legacy;
 
     public abstract class FloatBaseTests<TBox, T> : NumericBoxTests<TBox, T>
         where TBox : DecimalDigitsBox<T>
