@@ -9,7 +9,6 @@ namespace Gu.Wpf.NumericInput.Tests
     using System.Windows.Data;
 
     using NUnit.Framework;
-    using NUnit.Framework.Legacy;
 
     public abstract class NumericBoxTests<TBox, T>
         : BaseBoxTests
