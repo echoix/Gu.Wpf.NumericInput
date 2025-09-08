@@ -27,7 +27,7 @@ namespace Gu.Wpf.NumericInput.Tests
                 Increment = 10,
             };
             box.IncreaseCommand!.Execute(null);
-            Assert.That(box.Value, Is.EqualTo(short.MaxValue));
+            Assert.AreEqual(short.MaxValue, box.Value);
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace Gu.Wpf.NumericInput.Tests
                 Increment = 10,
             };
             box.DecreaseCommand!.Execute(null);
-            Assert.That(box.Value, Is.EqualTo(short.MinValue));
+            Assert.AreEqual(short.MinValue, box.Value);
         }
     }
 }

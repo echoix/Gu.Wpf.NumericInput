@@ -35,21 +35,21 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var window = app.MainWindow;
             window.FindCheckBox("SelectAllOnFocus").IsChecked = true;
             window.FindTextBox("TextBox1").Click();
-            Assert.That(window.FindTextBox("TextBox1").SelectedText(), Is.EqualTo("1.234"));
+            Assert.AreEqual("1.234", window.FindTextBox("TextBox1").SelectedText());
 
             Keyboard.Type(Key.TAB);
             Wait.UntilInputIsProcessed();
-            Assert.That(window.FindTextBox("TextBox2").SelectedText(), Is.EqualTo("2.345"));
+            Assert.AreEqual("2.345", window.FindTextBox("TextBox2").SelectedText());
 
             window.FindTextBox("TextBox4").Click();
-            Assert.That(window.FindTextBox("TextBox4").SelectedText(), Is.EqualTo("1.234"));
+            Assert.AreEqual("1.234", window.FindTextBox("TextBox4").SelectedText());
 
             Keyboard.Type(Key.TAB);
             Wait.UntilInputIsProcessed();
-            Assert.That(window.FindTextBox("DoubleBox1").SelectedText(), Is.EqualTo("2.345"));
+            Assert.AreEqual("2.345", window.FindTextBox("DoubleBox1").SelectedText());
 
             window.FindTextBox("DoubleBox2").Click();
-            Assert.That(window.FindTextBox("DoubleBox2").SelectedText(), Is.EqualTo("3.456"));
+            Assert.AreEqual("3.456", window.FindTextBox("DoubleBox2").SelectedText());
         }
 
         [Test]
@@ -59,16 +59,16 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var window = app.MainWindow;
             window.FindCheckBox("SelectAllOnDoubleClick").IsChecked = true;
             window.FindTextBox("TextBox1").DoubleClick();
-            Assert.That(window.FindTextBox("TextBox1").SelectedText(), Is.EqualTo("1.234"));
+            Assert.AreEqual("1.234", window.FindTextBox("TextBox1").SelectedText());
 
             window.FindTextBox("TextBox4").DoubleClick();
-            Assert.That(window.FindTextBox("TextBox4").SelectedText(), Is.EqualTo("1.234"));
+            Assert.AreEqual("1.234", window.FindTextBox("TextBox4").SelectedText());
 
             window.FindTextBox("DoubleBox1").DoubleClick();
-            Assert.That(window.FindTextBox("DoubleBox1").SelectedText(), Is.EqualTo("2.345"));
+            Assert.AreEqual("2.345", window.FindTextBox("DoubleBox1").SelectedText());
 
             window.FindTextBox("DoubleBox2").DoubleClick();
-            Assert.That(window.FindTextBox("DoubleBox2").SelectedText(), Is.EqualTo("3.456"));
+            Assert.AreEqual("3.456", window.FindTextBox("DoubleBox2").SelectedText());
         }
     }
 }

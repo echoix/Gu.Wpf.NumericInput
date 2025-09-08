@@ -33,11 +33,11 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
             var textBox = window.FindTextBox(name);
-            Assert.That(textBox.Text, Is.EqualTo(expectedSv));
+            Assert.AreEqual(expectedSv, textBox.Text);
 
             window.FindTextBox("CultureTextBox").Text = "en-us";
             Keyboard.Type(Key.TAB);
-            Assert.That(textBox.Text, Is.EqualTo(expectedEn));
+            Assert.AreEqual(expectedEn, textBox.Text);
         }
     }
 }

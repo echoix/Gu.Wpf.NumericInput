@@ -10,7 +10,7 @@ namespace Gu.Wpf.NumericInput.Tests
     {
         protected BaseBox? Box { get; set; }
 
-        [TestCase("1", null!, false)]
+        [TestCase("1", null, false)]
         [TestCase("1", "", false)]
         [TestCase("1", "1", false)]
         [TestCase("1", "2", true)]
@@ -18,25 +18,22 @@ namespace Gu.Wpf.NumericInput.Tests
         {
             this.Box!.RegexPattern = pattern;
             this.Box.Text = text;
-            Assert.That(Validation.GetHasError(this.Box), Is.EqualTo(expected));
+            Assert.AreEqual(expected, Validation.GetHasError(this.Box));
         }
 
         [TestCase("1", null, false, "1", false)]
         [TestCase("1", null, false, "2", true)]
-        public void ValidatesOnPatternChanged(string text, string? pattern1, bool expected1, string pattern2, bool expected2)
+        public void ValidatesOnPatternChanged(string text, string pattern1, bool expected1, string pattern2, bool expected2)
         {
-            this.Box!.RegexPattern = pattern1!;
+            this.Box!.RegexPattern = pattern1;
             this.Box.Text = text;
-            Assert.That(Validation.GetHasError(this.Box), Is.EqualTo(expected1));
+            Assert.AreEqual(expected1, Validation.GetHasError(this.Box));
 
             this.Box.RegexPattern = pattern2;
-            Assert.Multiple(() =>
-            {
-                Assert.That(Validation.GetHasError(this.Box), Is.EqualTo(expected2));
+            Assert.AreEqual(expected2, Validation.GetHasError(this.Box));
 
-                Assert.That(this.Box.Status, Is.EqualTo(Status.Idle));
-                Assert.That(this.Box.TextSource, Is.EqualTo(TextSource.UserInput));
-            });
+            Assert.AreEqual(Status.Idle, this.Box.Status);
+            Assert.AreEqual(TextSource.UserInput, this.Box.TextSource);
         }
     }
 }

@@ -35,40 +35,28 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var doubleBox2 = doubleBoxes.FindTextBox("DoubleBox2");
             doubleBox1.Click();
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(true));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(false));
-            });
+            Assert.AreEqual(false, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(true, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox2.HasKeyboardFocus);
             doubleBox1.Enter("2");
-            Assert.That(textBoxes.FindTextBox("TextBox2").Text, Is.EqualTo("2.345"));
+            Assert.AreEqual("2.345", textBoxes.FindTextBox("TextBox2").Text);
 
             Keyboard.Type(Key.TAB);
-            Assert.Multiple(() =>
-            {
-                Assert.That(textBoxes.FindTextBox("TextBox2").Text, Is.EqualTo("2"));
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(true));
-            });
+            Assert.AreEqual("2", textBoxes.FindTextBox("TextBox2").Text);
+            Assert.AreEqual(false, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(true, doubleBox2.HasKeyboardFocus);
 
             Keyboard.Type(Key.TAB);
-            Assert.Multiple(() =>
-            {
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(true));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(false));
-            });
+            Assert.AreEqual(true, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox2.HasKeyboardFocus);
 
             Keyboard.Type(Key.TAB);
             window.WaitUntilResponsive();
-            Assert.Multiple(() =>
-            {
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(true));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(false));
-            });
+            Assert.AreEqual(false, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(true, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox2.HasKeyboardFocus);
         }
 
         [Test]
@@ -83,47 +71,32 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             var doubleBox2 = doubleBoxes.FindTextBox("DoubleBox2");
             window.FindCheckBox("AllowSpinners").IsChecked = true;
             doubleBox1.Click();
-            Assert.Multiple(() =>
-            {
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(true));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(false));
-            });
+            Assert.AreEqual(false, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(true, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox2.HasKeyboardFocus);
             doubleBox1.Enter("2");
-            Assert.That(textBoxes.FindTextBox("TextBox2").Text, Is.EqualTo("2.345"));
+            Assert.AreEqual("2.345", textBoxes.FindTextBox("TextBox2").Text);
 
             Keyboard.Type(Key.TAB);
-            Assert.Multiple(() =>
-            {
-                Assert.That(textBoxes.FindTextBox("TextBox2").Text, Is.EqualTo("2"));
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(true));
-            });
+            Assert.AreEqual("2", textBoxes.FindTextBox("TextBox2").Text);
+            Assert.AreEqual(false, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(true, doubleBox2.HasKeyboardFocus);
             doubleBox1.IncreaseButton().Click();
-            Assert.Multiple(() =>
-            {
-                Assert.That(doubleBox1.EditText(), Is.EqualTo("3"));
-                Assert.That(textBoxes.FindTextBox("TextBox2").Text, Is.EqualTo("2"));
-            });
+            Assert.AreEqual("3", doubleBox1.EditText());
+            Assert.AreEqual("2", textBoxes.FindTextBox("TextBox2").Text);
 
             Keyboard.Type(Key.TAB);
-            Assert.Multiple(() =>
-            {
-                Assert.That(doubleBox1.EditText(), Is.EqualTo("3"));
-                Assert.That(textBoxes.FindTextBox("TextBox2").Text, Is.EqualTo("3"));
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(true));
-            });
+            Assert.AreEqual("3", doubleBox1.EditText());
+            Assert.AreEqual("3", textBoxes.FindTextBox("TextBox2").Text);
+            Assert.AreEqual(false, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(true, doubleBox2.HasKeyboardFocus);
 
             Keyboard.Type(Key.TAB);
-            Assert.Multiple(() =>
-            {
-                Assert.That(textBox1.HasKeyboardFocus, Is.EqualTo(true));
-                Assert.That(doubleBox1.HasKeyboardFocus, Is.EqualTo(false));
-                Assert.That(doubleBox2.HasKeyboardFocus, Is.EqualTo(false));
-            });
+            Assert.AreEqual(true, textBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox1.HasKeyboardFocus);
+            Assert.AreEqual(false, doubleBox2.HasKeyboardFocus);
         }
     }
 }
