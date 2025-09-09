@@ -7,7 +7,6 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    //[STATestClass]
     [TestClass]
     public class ValidationErrorRegexTests
     {
