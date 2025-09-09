@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gu.Wpf.NumericInput.Demo\Gu.Wpf.NumericInput.Demo.csproj" />
     <ProjectReference Include="..\Gu.Wpf.NumericInput\Gu.Wpf.NumericInput.csproj" />
   </ItemGroup>
 </Project>
