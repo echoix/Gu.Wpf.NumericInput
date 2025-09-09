@@ -7,6 +7,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.runtimeconfig.json")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.dll")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.exe")]
+    [DeploymentItem("Gu.Wpf.NumericInput.dll")]
     public class ValidationHappyPathTests
     {
         private const string WindowName = "DoubleBoxValidationWindow";
