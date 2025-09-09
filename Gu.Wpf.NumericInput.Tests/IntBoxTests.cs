@@ -1,14 +1,14 @@
 namespace Gu.Wpf.NumericInput.Tests
 {
     using System;
-    using System.Threading;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
+    [STATestClass]
     public class IntBoxTests : NumericBoxTests<IntBox, int>
     {
+        protected override int ExpectedUnitValue => 1;
+
         protected override int Max => 10;
 
         protected override int Min => -10;

@@ -1,14 +1,14 @@
 namespace Gu.Wpf.NumericInput.Tests
 {
     using System;
-    using System.Threading;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
+    [STATestClass]
     public class DoubleBoxTests : FloatBaseTests<DoubleBox, double>
     {
+        protected override double ExpectedUnitValue => 1d;
+
         protected override double Max => 10;
 
         protected override double Min => -10;

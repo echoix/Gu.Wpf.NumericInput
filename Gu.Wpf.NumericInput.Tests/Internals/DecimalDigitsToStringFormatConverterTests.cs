@@ -1,18 +1,20 @@
 namespace Gu.Wpf.NumericInput.Tests.Internals
 {
     using System.Globalization;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    [TestClass]
     public class DecimalDigitsToStringFormatConverterTests
     {
-        [TestCase(null, 12345.678901, "12345.678901")]
-        [TestCase(0, 12345.678901, "12346")]
-        [TestCase(1, 12345.678901, "12345.7")]
-        [TestCase(3, 12345.678901, "12345.679")]
-        [TestCase(9, 12345.678901, "12345.678901000")]
-        [TestCase(-3, 12345.678901, "12345.679")]
-        [TestCase(-3, 12345.6, "12345.6")]
-        [TestCase(3, 12345.6, "12345.600")]
+        [TestMethod]
+        [DataRow(null, 12345.678901, "12345.678901")]
+        [DataRow(0, 12345.678901, "12346")]
+        [DataRow(1, 12345.678901, "12345.7")]
+        [DataRow(3, 12345.678901, "12345.679")]
+        [DataRow(9, 12345.678901, "12345.678901000")]
+        [DataRow(-3, 12345.678901, "12345.679")]
+        [DataRow(-3, 12345.6, "12345.6")]
+        [DataRow(3, 12345.6, "12345.600")]
         public void Convert(int? digits, double value, string expected)
         {
             var converter = DecimalDigitsToStringFormatConverter.Default;
