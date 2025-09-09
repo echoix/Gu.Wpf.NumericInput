@@ -1,12 +1,18 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
+    using System.Collections.Generic;
     using System.Globalization;
 
     using Gu.Wpf.UiAutomation;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    public static class FormatTests
+    [STATestClass]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.runtimeconfig.json")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.dll")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.exe")]
+    [DeploymentItem("Gu.Wpf.NumericInput.dll")]
+    public class FormatTests
     {
         private const string WindowName = "DoubleBoxValidationWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
@@ -14,18 +20,18 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         private static readonly CultureInfo EnUs = CultureInfo.GetCultureInfo("en-US");
         private static readonly CultureInfo SvSe = CultureInfo.GetCultureInfo("sv-SE");
 
-        private static readonly TestCaseData[] TestCases = new[]
+        private static IEnumerable<object[]> TestCases => new[]
         {
-            new TestCaseData("1", "F1", EnUs, "1.0", "1"),
-            new TestCaseData("1", "F1", SvSe, "1,0", "1"),
-            new TestCaseData("1.23456", "F3", EnUs, "1.235", "1.23456"),
-            new TestCaseData("1.23456", "F4", EnUs, "1.2346", "1.23456"),
-            new TestCaseData("1", "0.#", EnUs, "1", "1"),
-            new TestCaseData("1.23456", "0.###", EnUs, "1.235", "1.23456"),
+            new object[] { "1", "F1", EnUs, "1.0", "1" },
+            new object[] { "1", "F1", SvSe, "1,0", "1" },
+            new object[] { "1.23456", "F3", EnUs, "1.235", "1.23456" },
+            new object[] { "1.23456", "F4", EnUs, "1.2346", "1.23456" },
+            new object[] { "1", "0.#", EnUs, "1", "1" },
+            new object[] { "1.23456", "0.###", EnUs, "1.235", "1.23456" },
         };
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -33,14 +39,16 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.WaitUntilResponsive();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassInitialize]
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void WithStringFormat(string text, string stringFormat, CultureInfo culture, string formatted, string viewModelValue)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void WithStringFormat(string text, string stringFormat, CultureInfo culture, string formatted, string viewModelValue)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -58,8 +66,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [Test]
-        public static void WhenStringFormatChangesBindingLostFocusValidateOnPropertyChanged()
+        [TestMethod]
+        public void WhenStringFormatChangesBindingLostFocusValidateOnPropertyChanged()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -92,8 +100,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [Test]
-        public static void WhenStringFormatChangesBindingPropertyChangedValidateOnPropertyChanged()
+        [TestMethod]
+        public void WhenStringFormatChangesBindingPropertyChangedValidateOnPropertyChanged()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

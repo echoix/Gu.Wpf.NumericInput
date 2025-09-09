@@ -1,15 +1,21 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class SelectTests
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [STATestClass]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.runtimeconfig.json")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.dll")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.exe")]
+    [DeploymentItem("Gu.Wpf.NumericInput.dll")]
+    public class SelectTests
     {
         private const string WindowName = "SelectWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -22,14 +28,15 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("DigitsBox").Text = "1";
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassInitialize]
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [Test]
-        public static void SelectAllOnFocus()
+        [TestMethod]
+        public void SelectAllOnFocus()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -52,8 +59,8 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual("3.456", window.FindTextBox("DoubleBox2").SelectedText());
         }
 
-        [Test]
-        public static void SelectAllOnDoubleClick()
+        [TestMethod]
+        public void SelectAllOnDoubleClick()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

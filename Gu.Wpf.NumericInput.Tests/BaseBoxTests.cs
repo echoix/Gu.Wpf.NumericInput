@@ -3,17 +3,18 @@ namespace Gu.Wpf.NumericInput.Tests
 {
     using System.Windows.Controls;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public abstract class BaseBoxTests
     {
         protected BaseBox? Box { get; set; }
 
-        [TestCase("1", null, false)]
-        [TestCase("1", "", false)]
-        [TestCase("1", "1", false)]
-        [TestCase("1", "2", true)]
+        [TestMethod]
+        [DataRow("1", null, false)]
+        [DataRow("1", "", false)]
+        [DataRow("1", "1", false)]
+        [DataRow("1", "2", true)]
         public void PatternValidation(string text, string pattern, bool expected)
         {
             this.Box!.RegexPattern = pattern;
@@ -21,8 +22,9 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(expected, Validation.GetHasError(this.Box));
         }
 
-        [TestCase("1", null, false, "1", false)]
-        [TestCase("1", null, false, "2", true)]
+        [TestMethod]
+        [DataRow("1", null, false, "1", false)]
+        [DataRow("1", null, false, "2", true)]
         public void ValidatesOnPatternChanged(string text, string pattern1, bool expected1, string pattern2, bool expected2)
         {
             this.Box!.RegexPattern = pattern1;

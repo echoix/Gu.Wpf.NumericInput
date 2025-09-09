@@ -3,6 +3,7 @@ namespace Gu.Wpf.NumericInput.UITests
     using System;
     using System.Linq;
     using System.Windows;
+
     using Gu.Wpf.UiAutomation;
 
     public static class UiElementExt

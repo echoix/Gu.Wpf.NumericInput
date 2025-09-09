@@ -1,45 +1,53 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
     using Gu.Wpf.UiAutomation;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    public static class ValidationErrorParseTests
+    [STATestClass]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.runtimeconfig.json")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.dll")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.exe")]
+    [DeploymentItem("Gu.Wpf.NumericInput.dll")]
+    public class ValidationErrorParseTests
     {
         private const string WindowName = "DoubleBoxValidationWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        private static readonly TestCaseData[] TestCases = new[]
+        private static IEnumerable<object[]> TestCases => new[]
             {
-                new TestCaseData("abc", "0", "ValidationError.CanParseValidationResult 'Please enter a valid number.'"),
-                new TestCaseData("2,1", "2", "ValidationError.CanParseValidationResult 'Please enter a valid number.'"),
+                new object[] { "abc", "0", "ValidationError.CanParseValidationResult 'Please enter a valid number.'" },
+                new object[] { "2,1", "2", "ValidationError.CanParseValidationResult 'Please enter a valid number.'" },
             };
 
-        private static readonly TestCaseData[] SwedishCases = new[]
+        private static IEnumerable<object[]> SwedishCases => new[]
             {
-                new TestCaseData("abc", "0", "ValidationError.CanParseValidationResult 'Vänligen ange en giltig siffra.'"),
-                new TestCaseData("2.1", "2", "ValidationError.CanParseValidationResult 'Vänligen ange en giltig siffra.'"),
+                new object[] { "abc", "0", "ValidationError.CanParseValidationResult 'Vänligen ange en giltig siffra.'" },
+                new object[] { "2.1", "2", "ValidationError.CanParseValidationResult 'Vänligen ange en giltig siffra.'" },
             };
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
             window.FindButton("Reset").Invoke();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassInitialize]
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCaseSource(nameof(TestCases))]
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
 #pragma warning disable CA1801, IDE0060 // Review unused parameters
-        public static void LostFocusValidateOnLostFocus(string text, string expected, string expectedInfoMessage)
+        public void LostFocusValidateOnLostFocus(string text, string expected, string expectedInfoMessage)
 #pragma warning restore CA1801, IDE0060 // Review unused parameters
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
@@ -63,9 +71,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(TestCases))]
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
 #pragma warning disable CA1801, IDE0060 // Review unused parameters
-        public static void LostFocusValidateOnPropertyChanged(string text, string expected, string expectedInfoMessage)
+        public void LostFocusValidateOnPropertyChanged(string text, string expected, string expectedInfoMessage)
 #pragma warning restore CA1801, IDE0060 // Review unused parameters
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
@@ -87,8 +96,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void PropertyChanged(string text, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void PropertyChanged(string text, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -102,8 +112,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(SwedishCases))]
-        public static void PropertyChangedSwedish(string text, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(SwedishCases))]
+        public void PropertyChangedSwedish(string text, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -118,8 +129,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void PropertyChangedWhenNotLocalized(string text, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void PropertyChangedWhenNotLocalized(string text, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -134,9 +146,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             Assert.AreEqual(TextSource.UserInput, doubleBox.TextSource());
         }
 
-        [TestCase("2.1", "ValidationError.CanParseValidationResult 'Please enter a valid number.'")]
-        [TestCase("2", null)]
-        public static void LostFocusValidateOnPropertyChangedWhenAllowDecimalPointChangesMakingInputInvalid(string text, string infoMessage)
+        [TestMethod]
+        [DataRow("2.1", "ValidationError.CanParseValidationResult 'Please enter a valid number.'")]
+        [DataRow("2", null)]
+        public void LostFocusValidateOnPropertyChangedWhenAllowDecimalPointChangesMakingInputInvalid(string text, string infoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -158,9 +171,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCase("2.1", "ValidationError.CanParseValidationResult 'Please enter a valid number.'")]
-        [TestCase("2", null)]
-        public static void LostFocusValidateOnPropertyChangedWhenAllowDecimalPointChangesMakingInputValid(string text, string infoMessage)
+        [TestMethod]
+        [DataRow("2.1", "ValidationError.CanParseValidationResult 'Please enter a valid number.'")]
+        [DataRow("2", null)]
+        public void LostFocusValidateOnPropertyChangedWhenAllowDecimalPointChangesMakingInputValid(string text, string infoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;

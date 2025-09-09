@@ -8,7 +8,7 @@ namespace Gu.Wpf.NumericInput.Tests
     using System.Windows.Controls;
     using System.Windows.Data;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public abstract class NumericBoxTests<TBox, T>
         : BaseBoxTests
@@ -16,6 +16,8 @@ namespace Gu.Wpf.NumericInput.Tests
         where T : struct, IComparable<T>, IFormattable, IConvertible, IEquatable<T>
     {
         protected new TBox Box => (TBox)base.Box!;
+
+        protected abstract T ExpectedUnitValue { get; }
 
         protected abstract Func<TBox> Creator { get; }
 
@@ -29,7 +31,7 @@ namespace Gu.Wpf.NumericInput.Tests
         protected DummyVm<T> Vm { get; private set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
             var enUs = CultureInfo.GetCultureInfo("en-US");
@@ -52,11 +54,11 @@ namespace Gu.Wpf.NumericInput.Tests
             this.Box.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
         }
 
-        [Test]
+        [TestMethod]
         public void Defaults()
         {
             var box = this.Creator();
-            Assert.AreEqual(1, box.Increment);
+            Assert.AreEqual(this.ExpectedUnitValue, box.Increment);
             var typeMin = (T)typeof(T).GetField("MinValue")!.GetValue(null)!;
             Assert.AreEqual(typeMin, box.MinLimit);
             Assert.IsNull(box.MinValue);
@@ -66,13 +68,14 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.IsNull(box.MaxValue);
         }
 
-        [TestCase(9, false)]
-        [TestCase(10, false)]
-        [TestCase(11, true)]
-        [TestCase(-9, false)]
-        [TestCase(-10, false)]
-        [TestCase(-11, true)]
-        public void SetValueValidates(T value, bool expected)
+        [TestMethod]
+        [DataRow(9, false)]
+        [DataRow(10, false)]
+        [DataRow(11, true)]
+        [DataRow(-9, false)]
+        [DataRow(-10, false)]
+        [DataRow(-11, true)]
+        public virtual void SetValueValidates(T value, bool expected)
         {
             this.Vm.Value = value;
             Assert.AreEqual(expected, Validation.GetHasError(this.Box));
@@ -81,10 +84,11 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(TextSource.ValueBinding, this.Box.TextSource);
         }
 
-        [TestCase(9, false, 8, true)]
-        [TestCase(10, false, 11, false)]
-        [TestCase(11, true, 15, false)]
-        public void SetMaxValidates(T value, bool expected, T newMax, bool expected2)
+        [TestMethod]
+        [DataRow(9, false, 8, true)]
+        [DataRow(10, false, 11, false)]
+        [DataRow(11, true, 15, false)]
+        public virtual void SetMaxValidates(T value, bool expected, T newMax, bool expected2)
         {
             this.Vm.Value = value;
             Assert.AreEqual(expected, Validation.GetHasError(this.Box));
@@ -94,10 +98,11 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(TextSource.ValueBinding, this.Box.TextSource);
         }
 
-        [TestCase(-9, false, -8, true)]
-        [TestCase(-10, false, -11, false)]
-        [TestCase(-11, true, -15, false)]
-        public void SetMinValidates(T value, bool expected, T newMax, bool expected2)
+        [TestMethod]
+        [DataRow(-9, false, -8, true)]
+        [DataRow(-10, false, -11, false)]
+        [DataRow(-11, true, -15, false)]
+        public virtual void SetMinValidates(T value, bool expected, T newMax, bool expected2)
         {
             this.Vm.Value = value;
             Assert.AreEqual(expected, Validation.GetHasError(this.Box));
@@ -107,8 +112,9 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(TextSource.ValueBinding, this.Box.TextSource);
         }
 
-        [TestCase(1, "11", true, "1", false)]
-        public void SetTextTwiceTest(T vmValue, string text1, bool expected1, string text2, bool expected2)
+        [TestMethod]
+        [DataRow(1, "11", true, "1", false)]
+        public virtual void SetTextTwiceTest(T vmValue, string text1, bool expected1, string text2, bool expected2)
         {
             this.Vm.Value = vmValue;
             this.Box.Text = text1;
@@ -121,28 +127,28 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(TextSource.UserInput, this.Box.TextSource);
         }
 
-        [Test]
-        public void ValueUpdatesWhenTextIsSet()
+        [TestMethod]
+        public virtual void ValueUpdatesWhenTextIsSet()
         {
             this.Box.Text = "1";
-            Assert.AreEqual(1, this.Box.GetValue(NumericBox<T>.ValueProperty));
+            Assert.AreEqual(this.ExpectedUnitValue, this.Box.GetValue(NumericBox<T>.ValueProperty));
         }
 
-        [TestCase(1)]
-        public void TextUpdatesWhenValueChanges(T value)
+        [TestMethod]
+        public void TextUpdatesWhenValueChanges()
         {
 #pragma warning disable WPF0014 // SetValue must use registered type.
-            this.Box.SetValue(NumericBox<T>.ValueProperty, value);
+            this.Box.SetValue(NumericBox<T>.ValueProperty, this.ExpectedUnitValue);
 #pragma warning restore WPF0014 // SetValue must use registered type.
             Assert.AreEqual("1", this.Box.Text);
         }
 
-        [Test]
+        [TestMethod]
         public void ValidationErrorResetsValue()
         {
             this.Box.Text = "1";
             Assert.AreEqual(false, Validation.GetHasError(base.Box));
-            Assert.AreEqual(1, this.Box.Value);
+            Assert.AreEqual(this.ExpectedUnitValue, this.Box.Value);
             Assert.AreEqual(null, this.Vm.Value);
 
             this.Box.Text = "1e";
@@ -151,11 +157,12 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(this.Vm.Value, this.Box.Value);
         }
 
-        [TestCase("-100", "-99", 0)]
-        [TestCase("0", "1", 1)]
-        [TestCase("9", "10", 10)]
-        [TestCase("10", "10", 10)]
-        public void IncreaseCommandExecute(string text, string expectedText, T expected)
+        [TestMethod]
+        [DataRow("-100", "-99", 0)]
+        [DataRow("0", "1", 1)]
+        [DataRow("9", "10", 10)]
+        [DataRow("10", "10", 10)]
+        public virtual void IncreaseCommandExecute(string text, string expectedText, T expected)
         {
             this.Vm.Value = this.Box.Parse("0");
             this.Box.Text = text;
@@ -165,12 +172,13 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(this.Box.Parse("0"), this.Vm.Value);
         }
 
-        [TestCase("-100", "-99", 0)]
-        [TestCase("-10", "-9", -9)]
-        [TestCase("0", "1", 1)]
-        [TestCase("9", "10", 10)]
-        [TestCase("10", "10", 10)]
-        public void IncreaseCommandExecuteSpinUpdateModePropertyChanged(string text, string expectedText, T expected)
+        [TestMethod]
+        [DataRow("-100", "-99", 0)]
+        [DataRow("-10", "-9", -9)]
+        [DataRow("0", "1", 1)]
+        [DataRow("9", "10", 10)]
+        [DataRow("10", "10", 10)]
+        public virtual void IncreaseCommandExecuteSpinUpdateModePropertyChanged(string text, string expectedText, T expected)
         {
             this.Vm.Value = this.Box.Parse("0");
             this.Box.Text = text;
@@ -181,10 +189,11 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(this.Box.Parse(expected.ToString(CultureInfo.InvariantCulture)), this.Vm.Value);
         }
 
-        [TestCase("9", true)]
-        [TestCase("10", false)]
-        [TestCase("11", false)]
-        [TestCase("1e", false)]
+        [TestMethod]
+        [DataRow("9", true)]
+        [DataRow("10", false)]
+        [DataRow("11", false)]
+        [DataRow("1e", false)]
         public void IncreaseCommandCanExecuteOnUserInput(string text, bool expected)
         {
             this.Box.AllowSpinners = true;
@@ -202,7 +211,7 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(2, count);
         }
 
-        [Test]
+        [TestMethod]
         public void IncreaseCommandCanExecuteRaiseExplicit()
         {
             var count = 0;
@@ -211,8 +220,9 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(1, count);
         }
 
-        [TestCase(8)]
-        public void IncreaseCommandCanExecuteChangedOnIncrease(T value)
+        [TestMethod]
+        [DataRow(8)]
+        public virtual void IncreaseCommandCanExecuteChangedOnIncrease(T value)
         {
             this.Box.AllowSpinners = true;
             this.Box.Value = value;
@@ -231,7 +241,7 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.IsFalse(this.Box.IncreaseCommand.CanExecute(null));
         }
 
-        [Test]
+        [TestMethod]
         public void IncreaseCommandCanExecuteChangedOnValueChanged()
         {
             this.Box.AllowSpinners = true;
@@ -247,8 +257,9 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(2, count);
         }
 
-        [TestCase(true, false)]
-        [TestCase(false, true)]
+        [TestMethod]
+        [DataRow(true, false)]
+        [DataRow(false, true)]
         public void IncreaseCommandCanExecuteIsReadonly(bool @readonly, bool expected)
         {
             this.Box.AllowSpinners = true;
@@ -260,11 +271,12 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(@readonly ? 1 : 0, count);
         }
 
-        [TestCase("100", "99", 0)]
-        [TestCase("0", "-1", -1)]
-        [TestCase("-9", "-10", -10)]
-        [TestCase("-10", "-10", -10)]
-        public void DecreaseCommandExecute(string text, string expectedText, T expected)
+        [TestMethod]
+        [DataRow("100", "99", 0)]
+        [DataRow("0", "-1", -1)]
+        [DataRow("-9", "-10", -10)]
+        [DataRow("-10", "-10", -10)]
+        public virtual void DecreaseCommandExecute(string text, string expectedText, T expected)
         {
             this.Vm.Value = this.Box.Parse("0");
             this.Box.Text = text;
@@ -273,12 +285,13 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(expected, this.Box.Value);
         }
 
-        [TestCase("100", "99", 0)]
-        [TestCase("10", "9", 9)]
-        [TestCase("0", "-1", -1)]
-        [TestCase("-9", "-10", -10)]
-        [TestCase("-10", "-10", -10)]
-        public void DecreaseCommandExecuteSpinUpdateModePropertyChanged(string text, string expectedText, T expected)
+        [TestMethod]
+        [DataRow("100", "99", 0)]
+        [DataRow("10", "9", 9)]
+        [DataRow("0", "-1", -1)]
+        [DataRow("-9", "-10", -10)]
+        [DataRow("-10", "-10", -10)]
+        public virtual void DecreaseCommandExecuteSpinUpdateModePropertyChanged(string text, string expectedText, T expected)
         {
             this.Vm.Value = this.Box.Parse("0");
             this.Box.Text = text;
@@ -289,7 +302,7 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(this.Box.Parse(expected.ToString(CultureInfo.InvariantCulture)), this.Vm.Value);
         }
 
-        [Test]
+        [TestMethod]
         public void DecreaseCommandCanExecuteRaiseExplicit()
         {
             var count = 0;
@@ -298,10 +311,11 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(1, count);
         }
 
-        [TestCase("-9", true)]
-        [TestCase("-10", false)]
-        [TestCase("-11", false)]
-        [TestCase("-1e", false)]
+        [TestMethod]
+        [DataRow("-9", true)]
+        [DataRow("-10", false)]
+        [DataRow("-11", false)]
+        [DataRow("-1e", false)]
         public void DecreaseCommandCanExecuteOnUserInput(string text, bool expected)
         {
             this.Box.AllowSpinners = true;
@@ -319,8 +333,9 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(2, count);
         }
 
-        [TestCase(-8)]
-        public void DecreaseCommandCanExecuteOnDecrease(T value)
+        [TestMethod]
+        [DataRow(-8)]
+        public virtual void DecreaseCommandCanExecuteOnDecrease(T value)
         {
             this.Box.AllowSpinners = true;
             this.Box.Value = value;
@@ -339,7 +354,7 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.IsFalse(this.Box.DecreaseCommand.CanExecute(null));
         }
 
-        [Test]
+        [TestMethod]
         public void DecreaseCommandCanExecuteChangedOnValueChanged()
         {
             this.Box.AllowSpinners = true;
@@ -355,8 +370,9 @@ namespace Gu.Wpf.NumericInput.Tests
             Assert.AreEqual(2, count);
         }
 
-        [TestCase(true, false)]
-        [TestCase(false, true)]
+        [TestMethod]
+        [DataRow(true, false)]
+        [DataRow(false, true)]
         public void DecreaseCommandCanExecuteIsReadonly(bool @readonly, bool expected)
         {
             this.Box.AllowSpinners = true;

@@ -1,15 +1,28 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
     using Gu.Wpf.UiAutomation;
-    using NUnit.Framework;
 
-    public static class TouchTests
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [STATestClass]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.runtimeconfig.json")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.dll")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.exe")]
+    [DeploymentItem("Gu.Wpf.NumericInput.dll")]
+    public class TouchTests
     {
         private const string WindowName = "TouchWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        [Test]
-        public static void Tap()
+        [ClassInitialize]
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeSetUp(TestContext testContext)
+        {
+            Application.KillLaunched(ExeFileName);
+        }
+
+        [TestMethod]
+        public void Tap()
         {
             using var app = Application.Launch(ExeFileName, WindowName);
             var window = app.MainWindow;

@@ -1,30 +1,36 @@
 namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 {
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
     using Gu.Wpf.UiAutomation;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    public static class ValidationErrorRegexTests
+    [STATestClass]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.runtimeconfig.json")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.dll")]
+    [DeploymentItem("Gu.Wpf.NumericInput.Demo.exe")]
+    [DeploymentItem("Gu.Wpf.NumericInput.dll")]
+    public class ValidationErrorRegexTests
     {
         private const string WindowName = "DoubleBoxValidationWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-        private static readonly TestCaseData[] TestCases = new[]
+        private static IEnumerable<object[]> TestCases => new[]
         {
-            new TestCaseData("1.2", @"^\d\.\d$", "1.2", null),
-            new TestCaseData("12.34", @"^\d\.\d$", "0", "ValidationError.RegexValidationResult 'Please provide valid input.'"),
+            new object[] { "1.2", @"^\d\.\d$", "1.2", null },
+            new object[] { "12.34", @"^\d\.\d$", "0", "ValidationError.RegexValidationResult 'Please provide valid input.'" },
         };
 
-        private static readonly TestCaseData[] SwedishCases = new[]
+        private static IEnumerable<object[]> SwedishCases => new[]
         {
-            new TestCaseData("1,2",  @"^\d,\d$", "1.2", null),
-            new TestCaseData("12,34",  @"^\d,\d$", "0", "ValidationError.RegexValidationResult 'Vänligen ange ett giltigt värde.'"),
+            new object[] { "1,2",  @"^\d,\d$", "1.2", null },
+            new object[] { "12,34",  @"^\d,\d$", "0", "ValidationError.RegexValidationResult 'Vänligen ange ett giltigt värde.'" },
         };
 
-        [SetUp]
-        public static void SetUp()
+        [TestInitialize]
+        public void SetUp()
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -32,14 +38,16 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindButton("Reset").Invoke();
         }
 
-        [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        [ClassInitialize]
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeTearDown(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName);
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void LostFocusValidateOnLostFocus(string text, string pattern, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void LostFocusValidateOnLostFocus(string text, string pattern, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -71,9 +79,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(TestCases))]
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
 #pragma warning disable CA1801, IDE0060 // Review unused parameters
-        public static void LostFocusValidateOnLostFocusWhenPatternChanges(string text, string pattern, string expected, string expectedInfoMessage)
+        public void LostFocusValidateOnLostFocusWhenPatternChanges(string text, string pattern, string expected, string expectedInfoMessage)
 #pragma warning restore CA1801, IDE0060 // Review unused parameters
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
@@ -106,8 +115,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void LostFocusValidateOnPropertyChanged(string text, string pattern, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void LostFocusValidateOnPropertyChanged(string text, string pattern, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -147,8 +157,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void PropertyChanged(string text, string pattern, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void PropertyChanged(string text, string pattern, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -174,8 +185,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(SwedishCases))]
-        public static void PropertyChangedSwedish(string text, string pattern, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(SwedishCases))]
+        public void PropertyChangedSwedish(string text, string pattern, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
@@ -202,8 +214,9 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             }
         }
 
-        [TestCaseSource(nameof(TestCases))]
-        public static void PropertyChangedWhenNotLocalized(string text, string pattern, string expected, string expectedInfoMessage)
+        [TestMethod]
+        [DynamicData(nameof(TestCases))]
+        public void PropertyChangedWhenNotLocalized(string text, string pattern, string expected, string expectedInfoMessage)
         {
             using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
             var window = app.MainWindow;
