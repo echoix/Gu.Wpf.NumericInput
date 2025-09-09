@@ -18,7 +18,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         }
 
         [ClassInitialize]
-        public static void ClassSetUp()
+        public static void ClassSetUp(TestContext testContext)
         {
             Application.KillLaunched(ExeFileName, WindowName);
         }
