@@ -6,8 +6,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
 
     using NUnit.Framework;
 
-    public static class FormatTests
+    public class FormatTests
     {
+        private Application app;
+        private Window window;
         private const string WindowName = "DoubleBoxValidationWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
@@ -25,25 +27,33 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         };
 
         [SetUp]
-        public static void SetUp()
+        public void SetUp()
         {
-            using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
-            var window = app.MainWindow;
+            app = Application.AttachOrLaunch(ExeFileName, WindowName);
+            //using var app = application;
+            window = app.MainWindow;
             window.FindButton("Reset").Invoke();
             window.WaitUntilResponsive();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            app.Dispose();
+        }
+
         [OneTimeTearDown]
-        public static void OneTimeTearDown()
+        public void OneTimeTearDown()
         {
             Application.KillLaunched(ExeFileName);
         }
 
         [TestCaseSource(nameof(TestCases))]
-        public static void WithStringFormat(string text, string stringFormat, CultureInfo culture, string formatted, string viewModelValue)
+        public void WithStringFormat(string text, string stringFormat, CultureInfo culture, string formatted, string viewModelValue)
         {
-            using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
-            var window = app.MainWindow;
+            //using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
+            //using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
+            //var window = app.MainWindow;
             var doubleBox = window.FindTextBox("LostFocusValidateOnPropertyChangedBox");
             window.FindTextBox("StringFormat").Text = stringFormat;
             _ = window.FindComboBox("Culture").Select(culture.Name);
@@ -59,10 +69,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         }
 
         [Test]
-        public static void WhenStringFormatChangesBindingLostFocusValidateOnPropertyChanged()
+        public void WhenStringFormatChangesBindingLostFocusValidateOnPropertyChanged()
         {
-            using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
-            var window = app.MainWindow;
+            //using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
+            //var window = app.MainWindow;
             var doubleBox = window.FindTextBox("LostFocusValidateOnPropertyChangedBox");
             window.FindTextBox("StringFormat").Text = "F1";
 
@@ -93,10 +103,10 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         }
 
         [Test]
-        public static void WhenStringFormatChangesBindingPropertyChangedValidateOnPropertyChanged()
+        public void WhenStringFormatChangesBindingPropertyChangedValidateOnPropertyChanged()
         {
-            using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
-            var window = app.MainWindow;
+            //using var app = Application.AttachOrLaunch(ExeFileName, WindowName);
+            //var window = app.MainWindow;
             var doubleBox = window.FindTextBox("PropertyChangedValidateOnPropertyChangedBox");
             window.FindTextBox("StringFormat").Text = "F1";
 
