@@ -19,6 +19,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindCheckBox("AllowSpinners").IsChecked = false;
         }
 
+        [ClassInitialize]
         [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
         public static void OneTimeTearDown(TestContext testContext)
         {

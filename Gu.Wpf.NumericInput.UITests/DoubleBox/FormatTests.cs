@@ -35,6 +35,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.WaitUntilResponsive();
         }
 
+        [ClassInitialize]
         [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
         public static void OneTimeTearDown(TestContext testContext)
         {

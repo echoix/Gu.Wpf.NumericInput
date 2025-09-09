@@ -24,6 +24,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindTextBox("DigitsBox").Text = "1";
         }
 
+        [ClassInitialize]
         [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
         public static void OneTimeTearDown(TestContext testContext)
         {

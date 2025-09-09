@@ -9,6 +9,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
     {
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
+        [ClassInitialize]
         [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
         public static void OneTimeSetUp(TestContext testContext)
         {

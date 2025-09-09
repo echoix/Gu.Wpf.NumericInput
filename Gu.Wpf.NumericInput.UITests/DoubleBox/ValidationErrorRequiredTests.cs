@@ -38,6 +38,7 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
             window.FindButton("Reset").Invoke();
         }
 
+        [ClassInitialize]
         [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
         public static void OneTimeTearDown(TestContext testContext)
         {

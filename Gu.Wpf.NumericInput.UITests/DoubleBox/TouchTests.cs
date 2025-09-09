@@ -10,6 +10,13 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         private const string WindowName = "TouchWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
+        [ClassInitialize]
+        [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+        public static void OneTimeSetUp(TestContext testContext)
+        {
+            Application.KillLaunched(ExeFileName);
+        }
+
         [TestMethod]
         public void Tap()
         {

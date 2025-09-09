@@ -10,17 +10,11 @@ namespace Gu.Wpf.NumericInput.UITests.DoubleBox
         private const string WindowName = "CycleFocusWindow";
         private const string ExeFileName = "Gu.Wpf.NumericInput.Demo.exe";
 
-
+        [ClassInitialize]
         [ClassCleanup(ClassCleanupBehavior.EndOfClass)]
         public static void OneTimeTearDown(TestContext testContext)
         {
-            Application.KillLaunched(ExeFileName, WindowName);
-        }
-
-        [ClassInitialize]
-        public static void ClassSetUp(TestContext testContext)
-        {
-            Application.KillLaunched(ExeFileName, WindowName);
+            Application.KillLaunched(ExeFileName);
         }
 
         [TestMethod]
